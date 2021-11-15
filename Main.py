@@ -659,7 +659,7 @@ def nextday():
             d="Day"+str(i)
             C.execute("update steps set {}=Null".format(d))
             C.execute("update calories set {}=Null".format(d))
-            C.execute("update calories set {}=Null".format(d))
+            C.execute("update steps_calories set {}=Null".format(d))
     
             mydb.commit()
             C.execute("update cell_day set day=1")
