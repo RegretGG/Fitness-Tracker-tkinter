@@ -411,6 +411,7 @@ def graphcal():
     days = []
     for i in range(1,len(Valuelist)+1):
         days.append(i)
+    plt.figure(4)
     plt.plot(days,Valuelist)
     plt.xlabel("Day")
     plt.ylabel("Calories Consumed")
@@ -443,13 +444,14 @@ def sendmailsteps():
     days=[]
     for i in range(1,len(Valuelist)+1):
         days.append(i)
+    plt.figure(3)
     plt.plot(days,Valuelist)
     plt.xlabel("Date")
     plt.ylabel("STEPS")
     plt.title("STEPS")
     plt.savefig("graph1",dpi = 100)
     msg = EmailMessage()
-    msg['Subject'] = 'Your fitness report.'
+    msg['Subject'] = 'Your personalized fitness report.'
     msg['From'] = 'fitnesstracker@gmail.com'
     msg['To'] = emailadressforsending
 
@@ -518,13 +520,14 @@ def sendmailcal():
     days=[]
     for i in range(1,len(Valuelist)+1):
         days.append(i)
+    plt.figure(1)
     plt.plot(days,Valuelist)
     plt.xlabel("Date")
     plt.ylabel("CALORIES")
     plt.title("CALORIES")
     plt.savefig("graph2",dpi = 100)
     msg = EmailMessage()
-    msg['Subject'] = 'Your fitness report.'
+    msg['Subject'] = 'Your personalized fitness report.'
     msg['From'] = 'fitnesstracker@gmail.com'
     msg['To'] = emailadressforsending
 
@@ -582,6 +585,7 @@ def graphstep():
     days=[]
     for i in range(1,len(Valuelist)+1):
         days.append(i)
+    plt.figure(2)
     plt.plot(days,Valuelist)
     plt.xlabel("STEPS")
     plt.ylabel("Date")
