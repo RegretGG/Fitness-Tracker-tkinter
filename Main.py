@@ -103,40 +103,55 @@ def NutrientCalculator():
         for i in temp:
             food.append(i[0])
         calnut = Tk()
-        calnut.config(bg="black")
-
-        calnut.geometry('1920x1080')
-        label = Label(calnut, text ="Enter a product that you ate.",  bg = "white")
+        calnut.geometry("1024x768")
+        calnut.config(bg = "black")
+        Label(calnut, text="",bg="black").pack()
+        Label(calnut, text="",bg="black").pack()
+        
+        label = Label(calnut, text ="Enter a product that you ate.",  bg = "cyan")
         label.pack()
+        Label(calnut, text="",bg="black").pack()
         # user input, product
-        label2 = Label(calnut, text = "Name: ", bg = "white")
+        label2 = Label(calnut, text = "Name: ", bg = "red")
         label2.pack()
+        Label(calnut, text="",bg="black").pack()
         entry = Entry(calnut)
         entry.pack()
+
         entry.bind('<KeyRelease>', on_keyrelease)
+        Label(calnut, text="",bg="black").pack()
         listbox = Listbox(calnut)
         listbox.pack()
         listbox.bind('<Double-Button-1>', on_select)
         listbox.bind('<<ListboxSelect>>', on_select)
         listbox_update(food)
-        label3 = Label(calnut, text = "Amount: ", bg = "white")
+        Label(calnut, text="",bg="black").pack()
+        label3 = Label(calnut, text = "Amount: ", bg = "yellow")
         label3.pack()
+        Label(calnut, text="",bg="black").pack()
         entryGram = Entry(calnut, width = 20, bg = "white")
         entryGram.pack()
+        Label(calnut, text="",bg="black").pack()
         # sub
         # output
         label4 = Label(calnut, text = "These are the nutrition values:", bg = "white")
         label4.pack()
+        Label(calnut, text="",bg="black").pack()
+
         output = Text(calnut, width = 20, height = 6, wrap = WORD, bg = "white")
         output.pack()
-        display = Button(calnut, text = "Display amount of calories.", width = 8, command = calcheck)
-        display.pack(padx = 10, pady = 10)
-        adder = Button(calnut, text = "Add to tracker.", width = 8, command = add)
-        adder.pack(padx = 10, pady = 10)
-        submitter = Button(calnut, text = "Submit", width = 8, command = submit,bg = "white")
-        submitter.pack(padx = 10, pady = 10)
-        goodbye = Button(calnut, text = "Back", width = 8, command = lambda:calnut.destroy(),bg = "white")
-        goodbye.pack(padx = 10, pady = 10)
+        Label(calnut, text="",bg="black").pack()
+        display = Button(calnut, text = "Display amount of calories.",  command = calcheck)
+        display.pack()
+        Label(calnut, text="",bg="black").pack()
+        adder = Button(calnut, text = "Add to tracker.", command = add)
+        adder.pack()
+        Label(calnut, text="",bg="black").pack()
+        submitter = Button(calnut, text = "Submit",  command = submit,bg = "white")
+        submitter.pack()
+        Label(calnut, text="",bg="black").pack()
+        goodbye = Button(calnut, text = "Back",  command = lambda:calnut.destroy(),bg = "white")
+        goodbye.pack()
         calnut.mainloop()
     def add():
         global calsum
@@ -160,21 +175,29 @@ def NutrientCalculator():
             threading.Timer(3, lambda:add.destroy()).start()
 
         add= Tk()
+        add.config(bg = "black")
         label = Label(add, text ="Enter the product name and its nutritional "\
         "values per serving", bg = "black", fg = "white")
         label.pack()
+        Label(add, text="",bg="black").pack()
+        Label(add, text="",bg="black").pack()
         label1 = Label(add, text = "Name:", bg = "black", fg = "white")
-        label1.pack()
+        label1.pack()   
+        Label(add, text="",bg="black").pack()
         nameEntry = Entry(add, width = 20, bg = "white")
         nameEntry.pack()
         a = nameEntry.get()
+        Label(add, text="",bg="black").pack()
         label2 = Label(add, text = "Calories:", bg = "black", fg = "white")
         label2.pack()
+        Label(add, text="",bg="black").pack()
         kcalEntry = Entry(add, width = 20, bg = "white")
         kcalEntry.pack()
         b = kcalEntry.get()
+        Label(add, text="",bg="black").pack()
         submit = Button(add, text = "Submit", width = 8, command = inserttable)
         submit.pack(padx = 10, pady = 10)
+        Label(add, text="",bg="black").pack()
         button3 = Button(add, text = "Back", width = 20, command = lambda: add.destroy())
         button3.pack(padx = 10, pady = 10)
         add.mainloop()
@@ -388,18 +411,30 @@ def graphcal():
     days = []
     for i in range(1,len(Valuelist)+1):
         days.append(i)
-
     plt.plot(days,Valuelist)
     plt.xlabel("Day")
     plt.ylabel("Calories Consumed")
     plt.title("CALORIES")
     plt.show()
-def sendmail():
+def sendmailsteps():
     img_format = 'png'
     f = io.BytesIO()
     C.execute("select * from steps where acc_name = \"{}\"".format(cookie))
     result = C.fetchone()
     steps=list(result)
+    C.execute("select email from account where acc_name = \"{}\"".format(cookie))
+    adress = C.fetchone()
+    emailadress=list(adress)
+    emailadressforsending = emailadress[0]
+    C.execute("select BMI from account where acc_name = \"{}\"".format(cookie))
+    BMI1 = C.fetchone()
+    BMI2=list(BMI1)
+    BMI3 = BMI2[0]
+    C.execute("select BodyFat from account where acc_name = \"{}\"".format(cookie))
+    BF1 = C.fetchone()
+    BF2=list(BF1)
+    BF3 = BF2[0]
+
     Valuelist = []
     steps.pop(0)    
     for i in steps:
@@ -416,7 +451,7 @@ def sendmail():
     msg = EmailMessage()
     msg['Subject'] = 'Hello there'
     msg['From'] = 'fitnesstracker@gmail.com'
-    msg['To'] = 'gauthamgopinadh@gmail.com'
+    msg['To'] = emailadressforsending
 
     # set the plain text body
     msg.set_content('This is a plain text body.')
@@ -430,8 +465,7 @@ def sendmail():
     msg.add_alternative("""\
     <html>
         <body>
-            <p>This is an HTML body.<br>
-            It also has an image.
+            <p>Your BMI is """+str(BMI3)+""" and your Body fat percentage is """+str(BF3)+"""."""+"""
             </p>
             <img src="cid:{image_cid}">
         </body>
@@ -444,6 +478,81 @@ def sendmail():
 
     # now open the image and attach it to the email
     with open('graph1.png', 'rb') as img:
+
+        # know the Content-Type of the image
+        maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
+
+        # attach it
+        msg.get_payload()[1].add_related(img.read(), 
+                                            maintype=maintype, 
+                                            subtype=subtype, 
+                                            cid=image_cid)
+    session = smtplib.SMTP('smtp.gmail.com', 587)
+    session.starttls()
+    session.login('fitnesstrackercasestudy@gmail.com', "Password@2021")
+    session.send_message(msg)
+    session.quit()
+def sendmailcal():
+    img_format = 'png'
+    f = io.BytesIO()
+    C.execute("select * from calories where acc_name = \"{}\"".format(cookie))
+    result = C.fetchone()
+    calories=list(result)
+    C.execute("select email from account where acc_name = \"{}\"".format(cookie))
+    adress = C.fetchone()
+    emailadress=list(adress)
+    emailadressforsending = emailadress[0]
+    C.execute("select BMI from account where acc_name = \"{}\"".format(cookie))
+    BMI1 = C.fetchone()
+    BMI2=list(BMI1)
+    BMI3 = BMI2[0]
+    C.execute("select BodyFat from account where acc_name = \"{}\"".format(cookie))
+    BF1 = C.fetchone()
+    BF2=list(BF1)
+    BF3 = BF2[0]
+    Valuelist = []
+    calories.pop(0)    
+    for i in calories:
+        if i:
+            Valuelist.append(i)
+    days=[]
+    for i in range(1,len(Valuelist)+1):
+        days.append(i)
+    plt.plot(days,Valuelist)
+    plt.xlabel("Date")
+    plt.ylabel("CALORIES")
+    plt.title("CALORIES")
+    plt.savefig("graph2",dpi = 100)
+    msg = EmailMessage()
+    msg['Subject'] = 'Hello there'
+    msg['From'] = 'fitnesstracker@gmail.com'
+    msg['To'] = emailadressforsending
+
+    # set the plain text body
+    msg.set_content('This is a plain text body.')
+
+    # now create a Content-ID for the image
+    image_cid = make_msgid()
+    # if `domain` argument isn't provided, it will 
+    # use your computer's name
+
+    # set an alternative html body
+    msg.add_alternative("""\
+    <html>
+        <body>
+            <p>Your BMI is """+str(BMI3)+""" and your Body fat percentage is """+str(BF3)+"""."""+"""
+            </p>
+            <img src="cid:{image_cid}">
+        </body>
+    </html>
+    """.format(image_cid=image_cid[1:-1]), subtype='html')
+    # image_cid looks like <long.random.number@xyz.com>
+    # to use it as the img src, we don't need `<` or `>`
+    # so we use [1:-1] to strip them off
+
+
+    # now open the image and attach it to the email
+    with open('graph2.png', 'rb') as img:
 
         # know the Content-Type of the image
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
@@ -478,7 +587,7 @@ def graphstep():
     plt.ylabel("Date")
     plt.title("STEPS")
     plt.show()
-def BMIREEVAL():
+def BMIREEVAl():
     bmi=Tk()
     bmi.title("BMI Calculator")
     bmi.geometry("500x400")
@@ -623,7 +732,7 @@ def bmiwi():
     Label(bmiwind, text="",bg="black").pack()
     Label(bmiwind, text="",bg="black").pack()
     caloriegraph=Button(bmiwind,text="CAL GRAPH", font=("Arial",16,'bold'),fg="blue", bg='black',activeforeground='#5291ff',
-                    activebackground='black', compound='top',command=sendmail).pack()
+                    activebackground='black', compound='top',command=graphcal).pack()
     Label(bmiwind, text="",bg="black").pack()
     Label(bmiwind, text="",bg="black").pack()
     stepgraph=Button(bmiwind,text="STEPS GRAPH", font=("Arial",16,'bold'),fg="BLUE", bg='black',activeforeground='#5291ff',
@@ -638,16 +747,19 @@ def bmiwi():
     Label(bmiwind, text="",bg="black").pack()
 
     Bmirevaluate = Button(bmiwind, text="Re-Evaluate your BMI", font=("Arial", 16, 'bold'), fg="red", bg='black',activeforeground='#5291ff',
-                activebackground='black', compound='top', command = BMIREEVAL).pack()
+                activebackground='black', compound='top', command = BMIREEVAl).pack()
     Label(bmiwind, text="",bg="black").pack()
     Label(bmiwind, text="",bg="black").pack()
     nextday_button=Button(bmiwind,text="NEXT DAY", font=("Arial",16,'bold'),fg="green", bg='black',activeforeground='#5291ff',
         activebackground='black', compound='top', command=nextday).pack()
-
     Label(bmiwind, text="",bg="black").pack()
     Label(bmiwind, text="",bg="black").pack()
-
-
+    sendzastepsemail=Button(bmiwind,text="Send me a report on my steps count and general health.", font=("Arial",16,'bold'),fg="green", bg='black',activeforeground='#5291ff',
+        activebackground='black', compound='top', command=sendmailsteps).pack()
+    Label(bmiwind, text="",bg="black").pack()
+    Label(bmiwind, text="",bg="black").pack()
+    sendzacalemail=Button(bmiwind,text="Send me a report on my calorie intake and general health.", font=("Arial",16,'bold'),fg="green", bg='black',activeforeground='#5291ff',
+        activebackground='black', compound='top', command=sendmailcal).pack()
 
     bmiwind.config(background="black")
 
@@ -771,36 +883,34 @@ def forgot():
 
 windows=Tk()
 a="1600x1000"
-a = PhotoImage(file="./Fitness-Tracker-tkinter-main/download.png")
+a = PhotoImage(file="download.png")
 backImg = Label(image=a).place(x=1600,y=1000)
 canvas= Canvas(windows,width= 1600, height= 1000)
 canvas.pack(expand=True, fill= BOTH)
 canvas.create_image(0,0,image=a, anchor="nw")
-windows.geometry("1280x720")
+windows.geometry("1600x1000")
 windows.title("FITNESS TRACKER 20")
 usernameB=Entry(windows)
-usernameB.place(x=150,y=170)
+usernameB.place(x=750,y=220)
 label=Label(windows,
             text="FITNESS TRACKER",
             font=('Arial',20,'bold'),
             fg='yellow',
             bg='black',
-            padx=20,
-            pady=20,
-            compound='top').pack()
+            compound='top').place(x=650,y=160)
 username=Label(windows,
             text="username",
             font=('Arial',9,'bold'),
             fg='white',bg='black')
-password=Label(windows,text="password",font=('Arial',9,'bold'),fg='white',bg='black').pack()
-new_user=Label(windows,text="if a new user click here",font=('Arial',9,'bold'),fg='#e60202',bg="black").place(x=15,y=270)
+password=Label(windows,text="password",font=('Arial',9,'bold'),fg='white',bg='black').place(x=675,y=250)
+new_user=Label(windows,text="if a new user click here",font=('Arial',9,'bold'),fg='#e60202',bg="black").place(x=645,y=320)
 submit=Button(windows,text="Create Account",command=register,font=("Calibri",9),
               fg="white",bg='black',activeforeground='#5291ff',
               activebackground='black',
-              compound='top').place(x=175,y=270)
+              compound='top').place(x=790,y=320)
 passwordB=Entry(windows,show="*")
-passwordB.place(x=150,y=200)
-username.place(x=80,y=170)
+passwordB.place(x=750,y=250)
+username.place(x=675,y=220)
 
 
 button=Button(windows,text="login",command=check_pass,font=("commic sans",10),
@@ -808,8 +918,8 @@ button=Button(windows,text="login",command=check_pass,font=("commic sans",10),
               activebackground='black',
               compound='top')
 forgotpass=Button(windows, text="FORGOT PASSWORD", font=('comic sans', 10),fg="#5291ff",bg='black',activeforeground='#5291ff',
-              activebackground='black', command= forgot).place(x=175,y=300)             
-button.place(x=175,y=230)
+              activebackground='black', command= forgot).place(x=710,y=350)             
+button.place(x=750,y=280)
 
 windows.config(background="black")
 
