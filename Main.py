@@ -449,7 +449,7 @@ def sendmailsteps():
     plt.title("STEPS")
     plt.savefig("graph1",dpi = 100)
     msg = EmailMessage()
-    msg['Subject'] = 'Hello there'
+    msg['Subject'] = 'Your fitness report.'
     msg['From'] = 'fitnesstracker@gmail.com'
     msg['To'] = emailadressforsending
 
@@ -524,7 +524,7 @@ def sendmailcal():
     plt.title("CALORIES")
     plt.savefig("graph2",dpi = 100)
     msg = EmailMessage()
-    msg['Subject'] = 'Hello there'
+    msg['Subject'] = 'Your fitness report.'
     msg['From'] = 'fitnesstracker@gmail.com'
     msg['To'] = emailadressforsending
 
