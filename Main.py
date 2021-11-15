@@ -655,8 +655,12 @@ def nextday():
     dz=C.fetchone()
     dayz=int(dz[0])
     if dayz==31:
-        C.execute("update cell_day set day= 1")
-        mydb.commit()
+        for i in range(1,32):
+            d="Day"+str(i)
+            C.execute("update steps set {}=null".format(d))
+            C.execute("update cell_day set day=1")
+            mydb.commit()
+
     else:
         dayz=dayz+1
         C.execute("update cell_day set day={}".format(dayz))
